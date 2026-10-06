@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sandbox - Chat Room</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Unified Translucent Top Navbar -->
+    <div class="top-navbar-pill">
+        <button class="theme-toggle-btn" id="chatThemeBtn" onclick="toggleTheme()" title="Change Theme">☀️</button>
+        <button class="exit-btn" onclick="leaveRoom()" title="Leave Room">🚪</button>
+    </div>
+
+    <div class="chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <div class="room-info">
+                <span class="room-emoji">🛋️</span>
+                <div>
+                    <h2>The Sandbox</h2>
+                    <div class="status-indicator">
+                        <span class="green-dot"></span>
+                        <span id="userWelcome">Connected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Box (Scrollable) -->
+        <div id="messageBox" class="message-box">
+            <!-- Messages will load here dynamically -->
+        </div>
+
+        <!-- Input Footer -->
+        <form id="chatForm" class="chat-input-area" onsubmit="sendMessage(event)">
+            <input 
+                type="text" 
+                id="messageInput" 
+                placeholder="Type a message..." 
+                autocomplete="off" 
+                required 
+            />
+            <button type="submit" class="send-btn">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+
+    <!-- Firebase SDK Scripts (Modular CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA2LuMcC8QCWsIC7pmLYP6BLQZn_FqQvEw",
+            authDomain: "sandbox-2b54a.firebaseapp.com",
+            databaseURL: "https://sandbox-2b54a-default-rtdb.firebaseio.com",
+            projectId: "sandbox-2b54a",
+            storageBucket: "sandbox-2b54a.firebasestorage.app",
+            messagingSenderId: "210102696161",
+            appId: "1:210102696161:web:55d64b3e692a3e57b59fa0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const currentUser = localStorage.getItem('sandbox_user');
+        if (!currentUser) {
+            window.location.href = 'index.html';
+        } else {
+            document.getElementById('userWelcome').innerText = `Logged in as: ${currentUser}`;
+        }
+
+        window.sendMessage = function(event) {
+            event.preventDefault();
+            const inputField = document.getElementById('messageInput');
+            const messageText = inputField.value.trim();
+
+            if (messageText !== "") {
+                const messagesRef = ref(db, 'sandbox_chats');
+                const newMessageRef = push(messagesRef);
+                
+                // Using HH:mm format (e.g. 14:19)
+                const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+                set(newMessageRef, {
+                    username: currentUser,
+                    text: messageText,
+                    timestamp: timeString
+                });
+
+                inputField.value = '';
+            }
+        };
+
+        const messagesRef = ref(db, 'sandbox_chats');
+        onChildAdded(messagesRef, (snapshot) => {
+            const data = snapshot.val();
+            const messageBox = document.getElementById('messageBox');
+            
+            const isMe = data.username === currentUser;
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isMe ? 'my-message' : 'other-message'}`;
+
+            // Only show sender name if it's NOT you
+            const senderHeader = !isMe ? `<div class="sender-name">${data.username}</div>` : '';
+
+            messageDiv.innerHTML = `
+                ${senderHeader}
+                <div class="message-bubble">
+                    ${escapeHtml(data.text)}
+                    <span class="timestamp">${data.timestamp}</span>
+                </div>
+            `;
+
+            messageBox.appendChild(messageDiv);
+            messageBox.scrollTop = messageBox.scrollHeight;
+        });
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('sandbox_theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const btn = document.getElementById('chatThemeBtn');
+            if(btn) btn.innerText = theme === 'dark' ? '☀️' : '🌙';
+        }
+        
+        const currentSavedTheme = localStorage.getItem('sandbox_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', currentSavedTheme);
+        updateThemeIcon(currentSavedTheme);
+
+        function leaveRoom() {
+            localStorage.removeItem('sandbox_user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

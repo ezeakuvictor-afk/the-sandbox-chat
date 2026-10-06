@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sandbox - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Theme Toggle Button Top-Left -->
+    <button class="theme-toggle-btn" id="themeBtn" onclick="toggleTheme()" title="Change Theme">☀️</button>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo-emoji">🛋️</div>
+            <h1>The Sandbox</h1>
+            <p>Enter your nickname to join the room</p>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <input 
+                    type="text" 
+                    id="usernameInput" 
+                    placeholder="Your nickname..." 
+                    autocomplete="off" 
+                    required 
+                />
+                <button type="submit" class="join-btn">Lock In & Join</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('usernameInput').value.trim();
+            if(username) {
+                localStorage.setItem('sandbox_user', username);
+                window.location.href = 'chat.html';
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('sandbox_theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const btn = document.getElementById('themeBtn');
+            if(btn) btn.innerText = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        const savedTheme = localStorage.getItem('sandbox_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+    </script>
+</body>
+</html>

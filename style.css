@@ -1,0 +1,399 @@
+/* Theme Variables */
+:root[data-theme="dark"] {
+    --bg-gradient: linear-gradient(135deg, #0f1115 0%, #1a1f2c 100%);
+    --glass-bg: rgba(24, 27, 34, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+    --input-bg: rgba(15, 17, 21, 0.5);
+    --input-border: rgba(255, 255, 255, 0.1);
+    --btn-bg: #3b82f6;
+    --btn-hover: #2563eb;
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+:root[data-theme="light"] {
+    --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --input-bg: rgba(255, 255, 255, 0.5);
+    --input-border: rgba(0, 0, 0, 0.1);
+    --btn-bg: #6366f1;
+    --btn-hover: #4f46e5;
+    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background: var(--bg-gradient);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Login Page Theme Button Position (Top-Left) */
+.theme-toggle-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+    z-index: 10;
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.9);
+}
+
+/* Glass Card Layout (Asymmetrical Corners: Top-Left & Bottom-Right sharp) */
+.login-container {
+    width: 100%;
+    max-width: 380px;
+}
+
+.login-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    padding: 35px 24px;
+    border-radius: 0px 20px 0px 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: background 0.3s ease, border 0.3s ease;
+}
+
+.logo-emoji {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.login-card h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.login-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+/* Glass Input Field */
+#usernameInput {
+    width: 100%;
+    padding: 14px 16px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    backdrop-filter: blur(4px);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+}
+
+#usernameInput::placeholder {
+    color: var(--text-secondary);
+}
+
+#usernameInput:focus {
+    border-color: var(--btn-bg);
+}
+
+/* Button */
+.join-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--btn-bg);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.join-btn:active {
+    background-color: var(--btn-hover);
+    transform: scale(0.98);
+}
+
+/* --- Chat Room Full Screen & Pill Container --- */
+.top-navbar-pill {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 6px;
+    border-radius: 30px;
+    box-shadow: var(--shadow);
+    z-index: 10;
+}
+
+.top-navbar-pill .theme-toggle-btn, 
+.top-navbar-pill .exit-btn {
+    position: static;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.top-navbar-pill .theme-toggle-btn:active, 
+.top-navbar-pill .exit-btn:active {
+    transform: scale(0.9);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.chat-container {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    max-height: 100%;
+    background: var(--glass-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: none;
+    border-radius: 0px;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.room-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.room-emoji {
+    font-size: 32px;
+}
+
+.chat-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.green-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+}
+
+.message-box {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.message {
+    max-width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.my-message {
+    align-self: flex-end;
+}
+
+.other-message {
+    align-self: flex-start;
+}
+
+.message-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    padding: 0 4px;
+    gap: 12px;
+}
+
+.sender-name {
+    font-weight: 600;
+}
+
+/* --- Floating Glass Message Bubbles with Shadows --- */
+.message-bubble {
+    position: relative;
+    padding: 10px 16px 22px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-break: break-word;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* Sent message bubble (Floating with colored glow/shadow) */
+.my-message .message-bubble {
+    background-color: var(--btn-bg);
+    color: white;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+}
+
+.other-message .message-bubble {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-primary);
+    border-bottom-left-radius: 4px;
+}
+
+.chat-input-area {
+    padding: 14px 16px;
+    border-top: 1px solid var(--glass-border);
+    background: rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 10px;
+}
+
+#messageInput {
+    flex: 1;
+    padding: 12px 16px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    backdrop-filter: blur(4px);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#messageInput::placeholder {
+    color: var(--text-secondary);
+}
+
+#messageInput:focus {
+    border-color: var(--btn-bg);
+}
+
+.send-btn {
+    background-color: var(--btn-bg);
+    color: white;
+    border: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    flex-shrink: 0;
+}
+
+.send-btn:active {
+    background-color: var(--btn-hover);
+    transform: scale(0.95);
+}
+
+/* --- Updated Message Bubble with Bottom Timestamp --- */
+.message-bubble {
+    position: relative;
+    padding: 10px 16px 20px 16px; /* Extra padding at bottom for timestamp */
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-break: break-word;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.my-message .message-bubble {
+    background-color: var(--btn-bg);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+/* Received message bubble (Floating glass effect) */
+.other-message .message-bubble {
+    background-color: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.sender-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 3px;
+    padding-left: 4px;
+}
+
+.timestamp {
+    position: absolute;
+    right: 12px;
+    bottom: 5px;
+    font-size: 10px;
+    opacity: 0.75;
+    color: inherit;
+}
